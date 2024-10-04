@@ -39,8 +39,4 @@ for filename, chunks in resumeChunks.items():
     for i, chunk in enumerate(chunks):
         print(f"Chunk {i+1}")
         print(getResponse(chunk.page_content))
-<<<<<<< HEAD
         print()
-=======
-        print()
->>>>>>> 4aab8cc (Update documentSpecificChunk, main and requirements)
