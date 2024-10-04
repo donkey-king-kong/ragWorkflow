@@ -1,7 +1,7 @@
 from openai import AzureOpenAI
 import openai
 import os
-from document_specific_chunk import chunk_text
+from document_specific_chunk import markdown_chunk_text
 import os
 from dotenv import load_dotenv
 
@@ -23,8 +23,8 @@ def getResponse(chunks):
     openai.api_version = "2023-05-15"
 
     embedding = openai.embeddings.create(
-        model=deploymentName,
-        input=chunks
+        input=chunks,
+        model=deploymentName
     )
 
     return embedding
@@ -39,4 +39,8 @@ for filename, chunks in resumeChunks.items():
     for i, chunk in enumerate(chunks):
         print(f"Chunk {i+1}")
         print(getResponse(chunk.page_content))
+<<<<<<< HEAD
         print()
+=======
+        print()
+>>>>>>> 4aab8cc (Update documentSpecificChunk, main and requirements)
