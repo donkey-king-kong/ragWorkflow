@@ -1,7 +1,7 @@
 from openai import AzureOpenAI
 import openai
 import os
-from document_specific_chunk import markdown_chunk_test
+from document_specific_chunk import chunk_text
 import os
 from dotenv import load_dotenv
 
