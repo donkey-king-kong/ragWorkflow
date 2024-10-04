@@ -1,4 +1,4 @@
-from langchain.document_loaders import UnstructuredMarkdownLoader
+from langchain_community.document_loaders import UnstructuredMarkdownLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 import os
 
@@ -23,13 +23,3 @@ def markdown_chunk_text(folder_path, chunk_size=1000, chunk_overlap=50):
             resumeChunks[filename] = chunks
         
     return resumeChunks
-
-folder_path = "resumes"
-resumeChunks = chunk_text(folder_path)
-
-for filename, chunks in resumeChunks.items():
-    print(f"Chunks for {filename}:")
-    for i, chunk in enumerate(chunks):
-        print(f"Chunk {i+1}")
-        print(chunk.page_content)
-        print()
