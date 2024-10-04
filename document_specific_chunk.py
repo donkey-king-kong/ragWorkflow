@@ -25,7 +25,7 @@ def markdown_chunk_text(folder_path, chunk_size=1000, chunk_overlap=50):
     return resumeChunks
 
 folder_path = "resumes"
-resumeChunks = chunk_text(folder_path)
+resumeChunks = markdown_chunk_text(folder_path)
 
 for filename, chunks in resumeChunks.items():
     print(f"Chunks for {filename}:")
