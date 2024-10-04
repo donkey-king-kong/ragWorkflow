@@ -1,7 +1,7 @@
 from openai import AzureOpenAI
 import openai
 import os
-from document_specific_chunk import markdown_chunk_text
+from document_specific_chunk import markdown_chunk_test
 import os
 from dotenv import load_dotenv
 
@@ -23,8 +23,8 @@ def getResponse(chunks):
     openai.api_version = "2023-05-15"
 
     embedding = openai.embeddings.create(
-        input=chunks,
-        model=deploymentName
+        model=deploymentName,
+        input=chunks
     )
 
     return embedding
