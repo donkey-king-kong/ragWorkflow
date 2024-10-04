@@ -2,7 +2,7 @@ from langchain.document_loaders import UnstructuredMarkdownLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 import os
 
-def chunk_text(folder_path, chunk_size=1000, chunk_overlap=50):
+def markdown_chunk_text(folder_path, chunk_size=1000, chunk_overlap=50):
     resumeChunks = {}
 
     for filename in os.listdir(folder_path):
