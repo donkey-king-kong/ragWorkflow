@@ -13,7 +13,7 @@ def markdown_chunk_text(folder_path, chunk_size=1000, chunk_overlap=50):
             resume_docs = loader.load()
 
             text_splitter = RecursiveCharacterTextSplitter(
-                separators = ['\n##', '\n###', '\n####', '\n'],
+                separators = ['\n##', '\n###', '\n####','\n'],
                 chunk_size = chunk_size,
                 chunk_overlap = chunk_overlap
             )

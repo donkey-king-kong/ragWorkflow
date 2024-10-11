@@ -12,14 +12,17 @@ for filename, chunks in resumeChunks.items():
     print(f"Chunks for {filename}:")
     for i, chunk in enumerate(chunks):
         # Embedding each chunk
+        print(chunk.page_content)
+        print("=====================================================\n")
         vectorEmbedding = getResponse(chunk.page_content)
-        # Printing the chunk number
-        print(f"Chunk {i+1}: ")
         # Store each embedding into the database
         try: 
+            print(f"Chunk {i+1}: Inserting into databse...")
             insertDB(chunk.page_content, vectorEmbedding)
-        except:
+        except Exception as e:
+            print(f"Error inserting into database.\nDropping table....")
             dropTable()
+            quit()
 
 # Query
 # Embed the query
@@ -27,4 +30,5 @@ query = input("Enter query: ")
 queryEmbedding = getResponse(query)
 # Query the database
 queryDB(queryEmbedding)
+# Drop table before quitting
 dropTable()
