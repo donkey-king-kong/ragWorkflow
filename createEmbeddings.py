@@ -27,3 +27,18 @@ def getResponse(chunks):
 
     # This returns the embedding in a list
     return embedding['data'][0]['embedding']
+
+def semanticChunkingEmbeddings(chunks):
+    openai.api_type = "azure"
+    deploymentName = "text-embedding-ada-002"
+    openai.api_key = API_KEY
+    openai.azure_endpoint= ENDPOINT
+    openai.api_version = "2023-05-15"
+
+    embedding = openai.embeddings.create(
+        input=chunks,
+        model=deploymentName
+    )
+
+    # This returns the embedding in a list
+    return embedding

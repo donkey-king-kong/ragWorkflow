@@ -1,7 +1,10 @@
 import re
-from createEmbeddings import getResponse
+from createEmbeddings import semanticChunkingEmbeddings, getResponse
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
+import os
+from connectDB import queryDB, insertDB, createTable, dropTable
+
 
 def chunk_text(text):
     # Split the input text into individual sentences.
@@ -58,7 +61,7 @@ def _combine_sentences(sentences):
     return combined_sentences
 
 def convert_to_vector(texts):
-    response = getResponse(texts)
+    response = semanticChunkingEmbeddings(texts)
     print(type(response))
     embeddings_list = [embedding.embedding for embedding in response.data]
     print(type(embeddings_list))
@@ -73,91 +76,32 @@ def _calculate_cosine_distances(embeddings):
         distances.append(distance)
     return distances
 
-# Main Section
-text = """# Akash Savanur
+# The chunk_text and helper functions remain unchanged...
 
-+65 81732147 | akash013@e.ntu.edu.sg | linkedin.com/in/akash-savanur |
+# Define the directory containing the resumes
+resume_directory = 'resumes'
 
-## Education
+# Function to process all resume files in a folder
+def process_resume_folder_semantic_chunking(folder_path):
+    for filename in os.listdir(folder_path):
+        # Only process Markdown files
+        if filename.endswith('.md'):
+            file_path = os.path.join(folder_path, filename)
+            with open(file_path, 'r', encoding='utf-8') as file:
+                text = file.read()
+                chunks = chunk_text(text)
+                print(f'Chunks for {filename}:')
+                for i, chunk in enumerate(chunks):
+                    print("=====================================================\n")
+                    vectorEmbedding = getResponse(chunk)
+                    try: 
+                        print(f"Chunk {i+1}: Inserting into databse...")
+                        print("=====================================================\n")
+                        print(chunk)
+                        insertDB(chunk, vectorEmbedding)
+                    except Exception as e:
+                        print(f"Error inserting into database.\nDropping table....")
+                        dropTable()
+                        quit()
 
-### Nanyang Technological University, Singapore
-
-* Bachelor of Engineering in Computer Science, Second Major in Business
-
-**CGPA: 4.84/5.00**
-
-Aug 2023 - July 2027
-
-### Relevant Coursework
-
-* Data Structures and Algorithms, Data Science and Artificial Intelligence, Digital Logic, Financial Management
-
-## Experience
-
-### Full Stack Development Intern
-
-**Doozie Soft**
-
-June 2024 - July 2024
-
-Bangalore, India
-
-* Engineered a full-fledged temple management website using the PERN stack (PostgreSQL, Express, React, Node.js).
-* Designed and deployed 15+ microservices, reducing API response times by 40%, and handled over 2000 user registrations and 500+ payments through Razorpay with a 98% success rate.
-* Integrated WhatsApp APIs for OTP generation and notifications, enhancing user authentication and engagement, along with automated audit logs and receipt generation for secure transactions.
-* Managed the deployment process on AWS services, ensuring high scalability and reliability of the application, and maintained robust version control using GitHub.
-* Registered over 2000 users within the beta phase, facilitated by efficient event booking and donation management features, contributing to high user satisfaction and engagement.
-
-### Phishing Email Detection using Machine Learning
-
-**Nanyang Technological University**
-
-Apr 2024 - May 2024
-
-Singapore
-
-* Designed a Machine Learning solution to accurately classify and detect phishing emails, providing practical insights to prevent individuals from falling victim to phishing attacks in real-world scenarios.
-* Utilized Logistic Regression, Random Forest, GRU Neural Network and SVM machine learning models.
-* Best-performing model had an F1-score of 0.97.
-* The findings of this project have practical implications in real-world scenarios, where individuals can use the developed model to identify and avoid phishing emails, thereby reducing the risk of falling victim to cyber attacks.
-
-### Software Engineering Intern
-
-**Excelsoft Technologies Pvt Ltd**
-
-Apr 2022 - May 2022
-
-Mysore, India
-
-* Collaborated with a team of 5 developers to design and implement an employee attendance system; collaborated with system engineers, testing and QA for final delivery.
-* Designed a facial recognition system using PyTorch and utilised the Django framework for implementation.
-* Utilized four Machine Learning models and frameworks; Implemented convolutional neural networks and deep learning algorithms to optimise the model.
-
-### Project Leader
-
-**New York Academy of Sciences (NYAS)**
-
-Nov 2021 - Jan 2022
-
-* Led a team of 4 in the NYAS Telemedicine challenge; designed a mobile application aimed at tackling problems related to telemedicine diagnosis; enhanced data analytics competencies.
-
-## Technical Skills
-
-**Languages:** Java, Python, C/C++, SQL (Postgres), JavaScript, HTML/CSS, R
-
-**Frameworks:** React, Node.js, Django, Redux, Express, Material-UI, MongoDB
-
-**Developer Tools:** Git, Google Cloud Platform, VS Code, Visual Studio, PyCharm
-
-**Libraries:** pandas, NumPy, Matplotlib, Seaborn, Scikit-learn, PyTorch, Flask
-
-## Business/Finance Skills
-
-* NPV, IRR, MIRR, WACC, Equity markets, Bond markets, Portfolio analysis, Corporate Finance, Investments, Marketing"""
-chunks = chunk_text(text)
-
-
-for i, chunk in enumerate(chunks):
-    print(f'chunk{i+1}')
-    print(chunk)
-    print()
+            print(f'Finished processing {filename}\n')
