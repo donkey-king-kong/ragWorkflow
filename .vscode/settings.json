@@ -1,0 +1,29 @@
+{
+    "sqltools.connections": [
+        {
+            "server": "svc-3482219c-a389-4079-b18b-d50662524e8a-shared-dml.aws-virginia-6.svc.singlestore.com",
+            "port": 3333,
+            "database": "",
+            "username": "Text_Embedder",
+            "password": "KXpSybSt1xkJBhcsw4Hz97zr58mL4XfH",
+            "useSsl": false,
+            "previewLimit": 50,
+            "driver": "SingleStoreDB",
+            "name": "vectorDB"
+        },
+        {
+            "server": "svc-3482219c-a389-4079-b18b-d50662524e8a-shared-dml.aws-virginia-6.svc.singlestore.com",
+            "port": 3333,
+            "database": "db_lau_087d3",
+            "username": "Text_Embedder",
+            "password": "zXnYfv6suywSXUU7N8Q0fhlSemgMdk90",
+            "useSsl": true,
+            "previewLimit": 50,
+            "ssl": {
+                "rejectUnauthorized": true
+            },
+            "driver": "SingleStoreDB",
+            "name": "vectorDB"
+        }
+    ]
+}

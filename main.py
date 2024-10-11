@@ -5,6 +5,8 @@ from connectDB import queryDB, insertDB, createTable, dropTable
 folder_path = "resumes"
 resumeChunks = markdown_chunk_text(folder_path)
 
+createTable()
+
 # Chunking / Embedding / Storing
 for filename, chunks in resumeChunks.items():
     print(f"Chunks for {filename}:")
@@ -14,7 +16,10 @@ for filename, chunks in resumeChunks.items():
         # Printing the chunk number
         print(f"Chunk {i+1}: ")
         # Store each embedding into the database
-        insertDB(chunk.page_content, vectorEmbedding)
+        try: 
+            insertDB(chunk.page_content, vectorEmbedding)
+        except:
+            dropTable()
 
 # Query
 # Embed the query
@@ -22,3 +27,4 @@ query = input("Enter query: ")
 queryEmbedding = getResponse(query)
 # Query the database
 queryDB(queryEmbedding)
+dropTable()
