@@ -2,6 +2,7 @@ from openai import AzureOpenAI
 import openai
 import os
 from dotenv import load_dotenv
+import json
 
 load_dotenv()
 API_KEY = os.getenv("OPENAI_API_KEY")
@@ -19,5 +20,10 @@ def getResponse(chunks):
         input=chunks,
         model=deploymentName
     )
+    
+    # This stores the embedding as a string
+    embedding = embedding.model_dump_json() # Response is now a string of dictionary containing the keys: data, model, object and usage
+    embedding = json.loads(embedding) # This converts the string of dictionary to a dictionary
 
-    return embedding
+    # This returns the embedding in a list
+    return embedding['data'][0]['embedding']
